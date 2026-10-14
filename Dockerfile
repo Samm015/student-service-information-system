@@ -60,4 +60,4 @@ ENV APP_DEBUG=false
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"]
+CMD php artisan migrate --force && php artisan db:seed --force && php artisan tinker --execute="App\Models\User::updateOrCreate(['email'=>'admin@school.test'],['name'=>'System Admin','role'=>'admin','password'=>getenv('ADMIN_PASSWORD')]);" && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
